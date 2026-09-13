@@ -1,9 +1,17 @@
 {
   "name": "deepagents-beta9-backend",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Beta9 sandbox backend for Deep Agents JavaScript",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShayperCool/deepagents-beta9-backend.git"
+  },
+  "homepage": "https://github.com/ShayperCool/deepagents-beta9-backend#readme",
+  "bugs": {
+    "url": "https://github.com/ShayperCool/deepagents-beta9-backend/issues"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -13,6 +21,7 @@
   "files": ["dist", "README.md", "LICENSE"],
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "prepack": "npm run build",
     "typecheck:tests": "tsc --noEmit --module NodeNext --moduleResolution NodeNext --target ES2022 --skipLibCheck --allowImportingTsExtensions tests/integration.test.ts",
     "test": "bun test",
     "test:integration": "bun test tests/integration.test.ts"

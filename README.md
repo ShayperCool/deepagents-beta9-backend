@@ -4,13 +4,11 @@ Beta9 sandbox backend for [Deep Agents JavaScript](https://docs.langchain.com/os
 
 ## Install
 
-The GitHub release includes a ready-to-install package archive:
-
 ```sh
-bun add https://github.com/ShayperCool/deepagents-beta9-backend/releases/download/v0.1.0/deepagents-beta9-backend-0.1.0.tgz deepagents
+bun add deepagents-beta9-backend deepagents
 ```
 
-To work from a checkout, run `bun install && bun run build`, then add the checkout's absolute path to your application.
+To work from a checkout, run `bun install && bun run build`, then add the checkout's absolute path to your application. A package archive is also attached to each GitHub release.
 
 ## Use
 
