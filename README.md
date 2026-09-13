@@ -49,11 +49,11 @@ try {
 
 Use `Beta9Sandbox.connect(id)` to resume an existing sandbox. The caller controls sandbox creation and termination. `configureBeta9` sets the Beam JS client's process-wide options, so call it once before using the backend. Beta9's gateway URL must point to its HTTP API, usually port 1994.
 
-`Beta9Sandbox` extends Deep Agents' `BaseSandbox`. Deep Agents gets `execute`, `ls`, `read_file`, `write_file`, `edit_file`, `glob`, and `grep` through that contract. The input cast works around a `deepagents@1.13.4` type inference issue in `agent.invoke`; it has no runtime effect.
+`Image` and `Sandbox` are re-exports of the original classes from `@beamcloud/beam-js`. `Beta9Sandbox` is this package's adapter: it wraps the Beam client's `SandboxInstance` and extends Deep Agents' `BaseSandbox`. Deep Agents gets `execute`, `ls`, `read_file`, `write_file`, `edit_file`, `glob`, and `grep` through that contract. The input cast works around a `deepagents@1.13.4` type inference issue in `agent.invoke`; it has no runtime effect.
 
 ## Large output
 
-Beta9's upstream worker [raised one gRPC limit to 16 MiB](https://github.com/beam-cloud/beta9/commit/555800c3), but the installed gateway still rejects a direct 5 MiB `exec` response with a 4 MiB receive limit. This backend redirects combined stdout and stderr to a temporary file inside the sandbox, then reads it in 1 MiB chunks. It checks every chunk length, reassembles the bytes, decodes UTF-8, and removes the temporary file. `downloadFiles` uses the same bounded reader. `ExecuteResponse.truncated` stays `false` when all chunks arrive.
+To avoid gRPC response-size limits, this backend redirects combined stdout and stderr to a temporary file inside the sandbox, then reads it in 1 MiB chunks. It checks every chunk length, reassembles the bytes, decodes UTF-8, and removes the temporary file. `downloadFiles` uses the same bounded reader. `ExecuteResponse.truncated` stays `false` when all chunks arrive.
 
 The temporary file needs enough free space for the command output. `execute` returns text; use `downloadFiles` for byte-exact binary content.
 
@@ -69,5 +69,3 @@ bun run test:integration
 ```
 
 The gateway URL must point to Beta9's HTTP API. The tests skip when these three environment variables are absent. Obtain a token and workspace ID through your own Beta9 deployment; do not commit the token.
-
-Set `BETA9_PROBE_DIRECT=1` to run an additional diagnostic test for direct 5 MiB `exec`. It failed on the Beta9 gateway used for development with `ResourceExhausted`; the default test suite leaves it skipped because the backend does not depend on direct large responses.
