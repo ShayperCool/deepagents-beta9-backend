@@ -13,6 +13,7 @@
   "files": ["dist", "README.md", "LICENSE"],
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "typecheck:tests": "tsc --noEmit --module NodeNext --moduleResolution NodeNext --target ES2022 --skipLibCheck --allowImportingTsExtensions tests/integration.test.ts",
     "test": "bun test",
     "test:integration": "bun test tests/integration.test.ts"
   },
